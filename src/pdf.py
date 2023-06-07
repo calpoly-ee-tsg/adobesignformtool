@@ -1,17 +1,24 @@
 import PyPDF2 as pypdf
-def findInDict(needle, haystack):
-    for key in haystack.keys():
-        try:
-            value=haystack[key]
-        except:
-            continue
-        if key==needle:
-            return value
-        if isinstance(value,dict):
-            x=findInDict(needle,value)
-            if x is not None:
-                return x
-pdfobject=open('CTRX_filled.pdf','rb')
-pdf=pypdf.PdfFileReader(pdfobject)
-xfa=findInDict('/XFA',pdf.resolvedObjects)
-xml=xfa[7].getObject().getData()
+from excel import dataframe
+
+def extract_data(path, form_type="checkout-agreement"):
+    pdfobject = open(path, 'rb')
+    pdf = pypdf.PdfReader(pdfobject)
+    text = []
+    for page in pdf.pages:
+        text += page.extract_text().split('\n')
+    result = dataframe()
+    result["Name"] = text[69]
+    result["Email"] = text[70]
+    result["EmplID"] = text[71]
+    result["Phone"] = text[72]
+    result["Checkout Start"] = text[73]
+    result["Checkout End"] = text[74]
+    result["Advisor Name"] = text[38]
+    result["Advisor Email"] = text[40]
+    result["Reason"] = text[1234567]
+    result["Equipment"] = text[1234567]
+    result["Equipment SN"] = text[1234567]
+
+
+extract_data("C:\\Users\\ee-student-lab\\Downloads\\EE Equipment Loan Request (40).pdf")

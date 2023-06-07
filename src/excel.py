@@ -65,10 +65,10 @@ def dataframe():
               'Phone': None,
               'Checkout Start': None,
               'Checkout End': None,
-              'Remaining': None,
+              'Remaining': "-[@[Checkout End]]-TODAY()",
               'Advisor Name': None,
               'Advisor Email': None,
-              'Reason': None,
+              'Reason': "None",
               'Equipment': None,
               'Equipment SN': None
               }
