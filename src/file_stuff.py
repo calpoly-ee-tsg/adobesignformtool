@@ -47,6 +47,8 @@ def get_config(project_root):
                 break
             print("Directory doesn't exist.")
             i += 1
+        print("Please specify PDF save directory.")
+        saveas = input(' > ')
     return result
 
 

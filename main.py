@@ -6,6 +6,9 @@ from src.file_stuff import *
 from src.excel import *
 from consolemenu import *
 from consolemenu.items import *
+from src.pdf import *
+
+
 def main():
     project_root = get_project_root()
     config = get_config(project_root)
@@ -17,7 +20,18 @@ def main():
     menu_entry_index = selection_menu.current_option
     if menu_entry_index == 0:
         # import file
-        raise NotImplementedError
+        while True:
+            target = input("Directory of pdf files > ")
+            if os.path.isdir(target):
+                break
+            print("Not a directory or does not exist. Try again")
+        files = [os.path.join(target,f) for f in os.listdir(target) if f.split('.')[-1]=="pdf"]
+        wb = load_wb(wb_filename)
+        for each in files:
+            data = extract_data(each)
+            wb = append_table(wb,data)
+            save_wb(wb_filename, wb)
+        return
     elif menu_entry_index == 1:
         # init
         wb = load_wb(wb_filename)
@@ -50,10 +64,6 @@ def main():
     main()
 
 
-
-
 if __name__ == "__main__":
     logging.basicConfig()
     main()
-
-

@@ -59,18 +59,18 @@ def next_table_name(wb):
 
 
 def dataframe():
-    result = {"Name": None,
-              'Email': None,
-              'EmplID': None,
-              'Phone': None,
-              'Checkout Start': None,
-              'Checkout End': None,
-              'Remaining': "-[@[Checkout End]]-TODAY()",
-              'Advisor Name': None,
-              'Advisor Email': None,
-              'Reason': "None",
-              'Equipment': None,
-              'Equipment SN': None
+    result = {"Name": "error",
+              'Email': "error",
+              'EmplID': "error",
+              'Phone': "error",
+              'Checkout Start': "error",
+              'Checkout End': "error",
+              'Remaining': "=[@[Checkout End]]-TODAY()",
+              'Advisor Name': "error",
+              'Advisor Email': "error",
+              'Reason': "error",
+              'Equipment': "error",
+              'Equipment SN': "error"
               }
     return result
 
