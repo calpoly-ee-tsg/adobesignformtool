@@ -4,12 +4,13 @@ import json
 import pathlib
 from src.excel import *
 import shutil
+import subprocess, platform
 
 
 def get_config(project_root):
     # file format
     # - excelfile [workbook file name]
-    configfilename = 'config.txt'
+    configfilename = 'config.json'
     configfile = os.path.join(project_root, configfilename)
     result = {
         "excelfile": None
@@ -65,6 +66,9 @@ def file_prompt(text=" > ", must_exist=True, kind='file', max_retries=5, default
             print("Too many tries while entering file.")
             raise FileNotFoundError
         file = input(text)
+        if file == "":
+            if default is not None:
+                file = default
         if must_exist:
             if kind == 'file':
                 if os.path.exists(file):
@@ -75,7 +79,7 @@ def file_prompt(text=" > ", must_exist=True, kind='file', max_retries=5, default
                 if os.path.isdir(file):
                     break
                 else:
-                    print("Path {} does not exist or is not a directory.".format({}))
+                    print("Path {} does not exist or is not a directory.".format(file))
         else:
             break
         i += 1
@@ -95,4 +99,21 @@ def get_project_root():
 
 def copy_file(from_file, to_file):
     shutil.copy2(from_file, to_file)
+    return
+
+def delete_file(path):
+    try:
+        os.remove(path)
+    except:
+        logging.warning("Unable to remove file {} (is it open?)".format(path))
+    return
+
+
+def open_file_in_windows(filename):
+    if platform.system() == "Darwin":
+        subprocess.call(('open', filename))
+    elif platform.system() == "Windows":
+        os.startfile(filename)
+    else:
+        subprocess.call(('xdg-open', filename))
     return

@@ -1,0 +1,4 @@
+tika
+pycryptodome
+console-menu
+openpyxl
