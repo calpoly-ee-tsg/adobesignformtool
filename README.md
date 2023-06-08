@@ -15,7 +15,7 @@
 1. Delegate and sign the form.
 2. View the document in the adobe sign account.
 3. Click *Download Form Field Data*. Make sure it is saved to the default import location (downloads) or you know the directory where it will be saved to.
-![](./docs/pic1.png)
+![](https://github.com/calpoly-ee-tsg/adobesignformtool/blob/main/pic1.png)
 4. Download as many agreements aas you want. It will import them all.
 4. Run the python script and select option 1 (Import)
 5. Press enter when it prompts you for the default import location
