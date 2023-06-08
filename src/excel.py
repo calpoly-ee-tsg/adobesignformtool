@@ -27,8 +27,8 @@ def save_wb(filename, wb):
 def initialize_workbook(wb: Workbook):
     ws = wb.create_sheet()
     data = ['Chuck Bland', 'ccbland@calpoly.edu', 12345, '(805) 756-7000', datetime.date(2023, 6, 5),
-            datetime.date(2023, 6, 28), '=F2-TODAY()', 'Dale sterling lee dolan', 'dsdolan@calpoly.edu',
-            'Chuck want to work on his Ham radio at home', 'Ham radio', 'F00BAR22']
+            datetime.date(2023, 6, 28), '=[@[Checkout End]]-TODAY()', 'Dale sterling lee dolan', 'dsdolan@calpoly.edu',
+            'Chuck want to work on his Ham radio at home', 'Ham radio', 'F00BAR22', 'No Link']
     header = [i for i in dataframe().keys()]
     # header = ['Name', 'Email', 'EmplID', 'Phone', 'Checkout Start', 'Checkout End', 'Remaining', 'Advisor Name',
     #            'Advisor Email', 'Reason', 'Equipment', 'Equipment SN']
@@ -70,7 +70,8 @@ def dataframe():
               'Advisor Email': "error",
               'Reason': "error",
               'Equipment': "error",
-              'Equipment SN': "error"
+              'Equipment SN': "error",
+              'Link to PDF': 'no link'
               }
     return result
 
@@ -87,3 +88,9 @@ def append_table(wb, data):
 def new_wb():
     wb = Workbook()
     return wb
+
+
+def filename_generate(dataframe):
+    name = "".join(dataframe["Name"].split(" "))
+    date = "-".join(dataframe["Checkout End"].split("/"))
+    return "EquipmentChk_{}_{}.pdf".format(name, date)

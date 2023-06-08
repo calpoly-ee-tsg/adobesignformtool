@@ -9,10 +9,13 @@ from consolemenu.items import *
 from src.pdf import *
 
 
+
 def main():
     project_root = get_project_root()
     config = get_config(project_root)
     wb_filename = config["excelfile"]
+    pdf_saveasdir = config["saveas"]
+    default_import = config["defaultimport"]
 
     # Menu
     selection_menu = SelectionMenu(["Import", "Initialize", "Test"], "Adobe Sign Tool")
@@ -29,8 +32,11 @@ def main():
         wb = load_wb(wb_filename)
         for each in files:
             data = extract_data(each)
+            data["Link to PDF"] = "=HYPERLINK(\"{}\",\"PDF Form\")".format(os.path.join(pdf_saveasdir, filename_generate(data)))
             wb = append_table(wb,data)
             save_wb(wb_filename, wb)
+            copy_file(each, os.path.join(pdf_saveasdir, filename_generate(data)))
+
         return
     elif menu_entry_index == 1:
         # init

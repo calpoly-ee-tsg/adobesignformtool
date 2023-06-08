@@ -3,6 +3,7 @@ import os
 import json
 import pathlib
 from src.excel import *
+import shutil
 
 
 def get_config(project_root):
@@ -18,9 +19,8 @@ def get_config(project_root):
         f = open(configfile,)
         file = json.load(f)
         if "excelfile" in file:
-            result["excelfile"] = file["excelfile"]
             logging.debug("Loaded config file \"%s\"." % (configfilename))
-            return result
+            return file
         else:
             logging.error("Malformed config file. Please delete it and rerun the program.")
             raise RuntimeError
@@ -47,12 +47,39 @@ def get_config(project_root):
                 break
             print("Directory doesn't exist.")
             i += 1
-        print("Please specify PDF save directory.")
-        saveas = input(' > ')
+
+        result['saveas'] = file_prompt("Please specify PDF save directory. >", True, 'dir')
+        result['defaultimport'] = file_prompt("Please specify PDF save directory. >", True, 'dir')
+        f = open(configfile,'w')
+        json.dump(result, f)
+        f.close()
+
+
     return result
 
 
-
+def file_prompt(text=" > ", must_exist=True, kind='file', max_retries=5, default=None):
+    while True:
+        i = 0
+        if i > max_retries:
+            print("Too many tries while entering file.")
+            raise FileNotFoundError
+        file = input(text)
+        if must_exist:
+            if kind == 'file':
+                if os.path.exists(file):
+                    break
+                else:
+                    print("File {} does not exist.".format(file))
+            else:
+                if os.path.isdir(file):
+                    break
+                else:
+                    print("Path {} does not exist or is not a directory.".format({}))
+        else:
+            break
+        i += 1
+    return file
 
 
 def get_project_root():
@@ -64,3 +91,8 @@ def get_project_root():
     else:
         result = os.path.dirname(result)
         return result
+
+
+def copy_file(from_file, to_file):
+    shutil.copy2(from_file, to_file)
+    return
