@@ -6,6 +6,7 @@ import datetime
 
 
 def load_wb(filename):
+    # Make sure the excel sheet is not open
     i = 0
     while True:
         if i > 5:
@@ -14,9 +15,10 @@ def load_wb(filename):
             f = open(filename, 'r+')
             break
         except IOError:
-            logging.warning("User tried to open a file that is locked and is likely open in Excel.")
             input("Please close the open file in Excel and press enter. ")
+            logging.warning("User tried to open a file that is locked and is likely open in Excel.")
             i += 1
+
     return load_workbook(filename)
 
 
@@ -76,8 +78,15 @@ def dataframe():
     return result
 
 
-def append_table(wb, data):
-    ws = wb.active
+def append_table(wb, worksheet=None, data):
+    if worksheet is None:
+        ws = wb.active
+    else:
+        if worksheet in wb:
+            ws = wb[worksheet]
+        else:
+            logging.error("Could not find a worksheet named \"{}\" in the workbook. Please try to create it.")
+            raise IndexError("Worksheet not found in workbook.")
     result = []
     for i in dataframe().keys():
         result.append(data[i])

@@ -7,10 +7,9 @@ import shutil
 import subprocess, platform
 
 
-def get_config(project_root):
+def get_config(project_root, configfilename='config.json'):
     # file format
     # - excelfile [workbook file name]
-    configfilename = 'config.json'
     configfile = os.path.join(project_root, configfilename)
     result = {
         "excelfile": None
@@ -104,6 +103,7 @@ def copy_file(from_file, to_file):
 def delete_file(path):
     try:
         os.remove(path)
+        logging.debug("Deleted file {}".format(path))
     except:
         logging.warning("Unable to remove file {} (is it open?)".format(path))
     return
