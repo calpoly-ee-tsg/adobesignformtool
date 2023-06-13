@@ -25,7 +25,8 @@ This procedure needs to be ran every time a new form has been completed.
 8. Check it and extend the table all the way to the bottom.
 9. Save it with the exact same filename that it had before.
 ## Returned Equipment
-1. Use Excel search filters to find the person's equipment by date or name. Nice!
-2. Select the last column (Returned).
-3. Press `Ctrl-;` to auto type the current date (or simply type today's date).
-4. Save the form
+1. Reload the Excel file if you have it open on the Surface.
+2. Use Excel search filters to find the person's equipment by date or name. Nice!
+3. Select the last column (Returned).
+4. Press `Ctrl-;` to auto type the current date (or simply type today's date).
+5. Save the form
