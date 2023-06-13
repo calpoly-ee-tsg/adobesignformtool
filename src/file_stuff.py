@@ -16,7 +16,7 @@ def get_config(project_root, configfilename='config.json'):
     }
     if os.path.exists(configfile):
         # the config file exists
-        f = open(configfile,)
+        f = open(configfile, )
         file = json.load(f)
         if "excelfile" in file:
             logging.debug("Loaded config file \"%s\"." % (configfilename))
@@ -34,7 +34,7 @@ def get_config(project_root, configfilename='config.json'):
             if os.path.exists(os.path.dirname(file)):
                 # ok- dir exists
                 result["excelfile"] = file
-                f = open(configfile,'w')
+                f = open(configfile, 'w')
                 json.dump(result, f)
                 logging.info("Created config file")
                 if os.path.exists(file) and pathlib.Path(file).suffix in [".xlsx", ".xls"]:
@@ -50,10 +50,9 @@ def get_config(project_root, configfilename='config.json'):
 
         result['saveas'] = file_prompt("Please specify PDF save directory. >", True, 'dir')
         result['defaultimport'] = file_prompt("Please specify PDF save directory. >", True, 'dir')
-        f = open(configfile,'w')
+        f = open(configfile, 'w')
         json.dump(result, f)
         f.close()
-
 
     return result
 
@@ -100,6 +99,7 @@ def copy_file(from_file, to_file):
     shutil.copy2(from_file, to_file)
     return
 
+
 def delete_file(path):
     try:
         os.remove(path)
@@ -117,3 +117,10 @@ def open_file_in_windows(filename):
     else:
         subprocess.call(('xdg-open', filename))
     return
+
+
+def split_up(text: str, delimiters):
+    for c in delimiters:
+        text = text.replace(c, '\r')
+    text = [i for i in text.split('\r') if i != '']
+    return text

@@ -6,7 +6,7 @@ import logging
 def extract_data(path, form_type="checkout-agreement"):
     raw = parser.from_file(path)
     text = [item for item in raw["content"].split('\n') if item != '']
-    result = dataframe()
+    result = dataframe(FORM_FIELDS, NotImplemented)
     if form_type == 'checkout-agreement':
         name_index = text.index("Returned Date:                            Initials:")+2
         while (text[name_index] == text[name_index + 1]):

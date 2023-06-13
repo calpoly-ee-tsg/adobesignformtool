@@ -1,4 +1,5 @@
 import logging
+import os.path
 
 from openpyxl import Workbook, load_workbook
 from openpyxl.worksheet.table import Table, TableStyleInfo
@@ -23,27 +24,12 @@ def load_wb(filename):
 
 
 def save_wb(filename, wb):
-    wb.save(filename)
-
-
-def initialize_workbook(wb: Workbook):
-    ws = wb.create_sheet()
-    data = ['Chuck Bland', 'ccbland@calpoly.edu', 12345, '(805) 756-7000', datetime.date(2023, 6, 5),
-            datetime.date(2023, 6, 28), '=[@[Checkout End]]-TODAY()', 'Dale sterling lee dolan', 'dsdolan@calpoly.edu',
-            'Chuck want to work on his Ham radio at home', 'Ham radio', 'F00BAR22', 'No Link']
-    header = [i for i in dataframe().keys()]
-    # header = ['Name', 'Email', 'EmplID', 'Phone', 'Checkout Start', 'Checkout End', 'Remaining', 'Advisor Name',
-    #            'Advisor Email', 'Reason', 'Equipment', 'Equipment SN']
-    ws.append(header)
-    ws.append(data)
-    tab = Table(displayName=next_table_name(wb), ref="A1:{}2".format(chr(ord('A') + len(data))))
-    # for column, value in zip(tab.tableColumns, header):
-    #     column.name = value
-    style = TableStyleInfo(name="TableStyleMedium9", showFirstColumn=False, showLastColumn=False, showRowStripes=True,
-                           showColumnStripes=True)
-    tab.tableStyleInfo = style
-    ws.add_table(tab)
-    return wb
+    try:
+        wb.save(filename)
+    except PermissionError as E:
+        logging.warning("Permission error when saving.\n{}".format(E))
+        filename += "Conflicted Copy.xlsx"
+        wb.save(filename)
 
 
 def next_table_name(wb):
@@ -60,25 +46,13 @@ def next_table_name(wb):
             return "Table{}".format(base)
 
 
-def dataframe():
-    result = {"Name": "error",
-              'Email': "error",
-              'EmplID': "error",
-              'Phone': "error",
-              'Checkout Start': "error",
-              'Checkout End': "error",
-              'Remaining': "=[@[Checkout End]]-TODAY()",
-              'Advisor Name': "error",
-              'Advisor Email': "error",
-              'Reason': "error",
-              'Equipment': "error",
-              'Equipment SN': "error",
-              'Link to PDF': 'no link'
-              }
-    return result
+def dataframe(form_fields, form_type):
+    return form_fields[form_type]["dataframe"]
 
 
-def append_table(wb, worksheet=None, data):
+def append_table(wb, data, form_fields, form_kind, worksheet=None):
+    if worksheet.lower()[-9:] == ' (legacy)':
+        worksheet = worksheet[:-9]
     if worksheet is None:
         ws = wb.active
     else:
@@ -88,7 +62,7 @@ def append_table(wb, worksheet=None, data):
             logging.error("Could not find a worksheet named \"{}\" in the workbook. Please try to create it.")
             raise IndexError("Worksheet not found in workbook.")
     result = []
-    for i in dataframe().keys():
+    for i in dataframe(form_fields, form_kind).keys():
         result.append(data[i])
     ws.append(result)
     return wb
