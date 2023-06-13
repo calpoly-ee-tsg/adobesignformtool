@@ -12,6 +12,7 @@
 
 # Instructions
 ## New Forms
+This procedure needs to be ran every time a new form has been completed.
 1. Delegate and sign the form.
 2. View the document in the adobe sign account.
 3. Click *Download Form Field Data*. Make sure it is saved to the default import location (downloads) or you know the directory where it will be saved to.
